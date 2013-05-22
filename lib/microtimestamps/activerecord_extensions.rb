@@ -60,7 +60,6 @@ module MicroTimestamps
     end
 
     def update(*args) #:nodoc:
-      binding.pry
       if should_record_microtimestamps?
         current_time = current_time_from_proper_timezone
 
