@@ -13,9 +13,6 @@ module MicroTimestamps
   # Usage in the model:
   #
   # use_microtime_for :created_at, :updated_at
-  #
-  #
-
 
   module ActiveRecordExtensions
 
@@ -38,7 +35,8 @@ module MicroTimestamps
       end
 
       def microtime_timestamps
-        @microtime_timestamps.uniq || []
+        @microtime_timestamps ||= []
+        @microtime_timestamps.uniq
       end
 
     end
@@ -51,7 +49,7 @@ module MicroTimestamps
 
         all_timestamp_attributes.each do |column|
           if respond_to?(column) && respond_to?("#{column}=") && self.send(column).nil?
-            write_attribute(column.to_s, time_for(column, current_time))
+            write_attribute(column.to_s, time_for(column.to_s, current_time))
           end
         end
       end
@@ -66,7 +64,7 @@ module MicroTimestamps
         timestamp_attributes_for_update_in_model.each do |column|
           column = column.to_s
           next if attribute_changed?(column)
-          write_attribute(column.to_s, time_for(column, current_time))
+          write_attribute(column.to_s, time_for(column.to_s, current_time))
         end
       end
       super
